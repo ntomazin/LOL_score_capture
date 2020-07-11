@@ -3,46 +3,40 @@ from PIL import ImageGrab
 import cv2
 import time
 import pytesseract
-
-
-def test():
-    last_time = time.time()
-    while (True):
-        # 800x600 windowed mode
-        printscreen = np.array(ImageGrab.grab(bbox=(1700, 0, 1920, 100)))
-        print('loop took {} seconds'.format(time.time() - last_time))
-        last_time = time.time()
-        cv2.imshow('window', cv2.cvtColor(printscreen, cv2.COLOR_BGR2RGB))
-        if cv2.waitKey(25) & 0xFF == ord('q'):
-            cv2.destroyAllWindows()
-            break
-
+from utils import *
 
 
 def screen_record():
     last_time = time.time()
     # Path of tesseract executable
-    pytesseract.pytesseract.tesseract_cmd = "~/Desktop/pytesseract.py"
+    pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
     while (True):
         # ImageGrab-To capture the screen image in a loop.
         # Bbox used to capture a specific area.
-        cap = ImageGrab.grab(bbox=(1700, 0, 1920, 100))
+        cap = ImageGrab.grab(bbox=(1680, 30, 1750, 60))
         print('loop took {} seconds'.format(time.time() - last_time))
         last_time = time.time()
+        gray = get_grayscale(np.array(cap))
+        thresh = thresholding(gray)
 
-        cv2.imshow('window', cv2.cvtColor(np.array(cap), cv2.COLOR_BGR2RGB))
+        cv2.imshow('gray', gray)
+        cv2.imshow('thresh', thresh)
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             break
 
         # Converted the image to monochrome for it to be easily
-        # read by the OCR and obtained the output String.
-        tesstr = pytesseract.image_to_string(
-            cv2.cvtColor(np.array(cap), cv2.COLOR_BGR2GRAY),
-            lang='eng')
+        # read by the OCR and obtained the output String.q
+        tesstr_gray = pytesseract.image_to_string(gray, lang='eng',
+                                                  config='--psm 13 --oem 3 -c tessedit_char_whitelist=0123456789')
+        print(f"Gray: {tesstr_gray}")
 
-        print(tesstr)
+        #The same but for thresholded
+        #tesstr_thresh = pytesseract.image_to_string(thresh, lang='eng',
+        #                                            config='--psm 13 --oem 3 -c tessedit_char_whitelist=0123456789')
+        #print(f"Thresh: {tesstr_thresh}")
 
-    # Calling the function
+
+        #time.sleep(0.8)
 
 screen_record()
