@@ -17,6 +17,17 @@ def remove_noise(image):
 def thresholding(image):
     return cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 
+# thresholding reverse
+def thresholding_inv(image):
+    return cv2.threshold(image, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+
+# adaptive thresholding
+def adaptive_thresholding_gaussian(image):
+    return cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+
+# adaptive thresholding
+def adaptive_thresholding_mean(image):
+    return cv2.adaptiveThreshold(image, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 11, 2)
 
 # dilation
 def dilate(image):
