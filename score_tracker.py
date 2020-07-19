@@ -1,9 +1,7 @@
-import numpy as np
 from PIL import ImageGrab
-import cv2
 import time
-import pytesseract
 from utils import *
+from voice_utils import *
 
 
 def screen_record():
@@ -43,13 +41,13 @@ def screen_record():
         try:
             kill, death, assist = map(int, tesstr_thresh.split("/"))
             if kill > old_kill:
-                print("Ubi cetnika")
+                play_sound("kill")
                 old_kill = kill
             if death > old_death:
-                print("Fider")
+                play_sound("death")
                 old_death = death
             if assist > old_assist:
-                print("KS PICKO")
+                play_sound("assist")
                 old_assist = assist
 
         except:
