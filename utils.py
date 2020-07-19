@@ -96,3 +96,11 @@ def box_words(img, d):
 
     cv2.imshow('img', img)
     cv2.waitKey(0)
+
+
+
+def dilate_small_kernel(img):
+    kernel = np.ones((1, 1), np.uint8)
+    img = cv2.dilate(img, kernel, iterations=1)
+    img = cv2.erode(img, kernel, iterations=1)
+    return img
